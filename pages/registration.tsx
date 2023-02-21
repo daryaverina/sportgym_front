@@ -1,3 +1,7 @@
 export default function Registration() {
-  return (<>register page will be here</>);
+  return (<>
+  <form action="http://sportgym/auth/register" method="post">
+    <input type="submit" value="Submit"/>
+  </form>
+  </>);
 }
