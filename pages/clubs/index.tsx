@@ -8,6 +8,28 @@ export default function Clubs() {
     { id: "list", title: "Show as List" },
     { id: "map", title: "Show on map" },
   ];
+  const clubs = [
+    {
+      id: 1,
+      name: "Earthen Bottle",
+      href: "clubs/club1",
+      price: "$48",
+      imageSrc:
+        "https://img.freepik.com/free-photo/3d-rendering-modern-loft-gym-and-fitness_105762-2020.jpg",
+      imageAlt:
+        "Tall slender porcelain bottle with natural clay textured body and cork stopper.",
+    },
+    {
+      id: 2,
+      name: "Nomad Tumbler",
+      href: "clubs/club2",
+      price: "$35",
+      imageSrc:
+        "https://img.freepik.com/premium-photo/modern-gym-interior-with-exercise-equipments_23-2147949737.jpg",
+      imageAlt:
+        "Olive drab green insulated bottle with flared screw lid and flat top.",
+    },
+  ]
   const [showType, setShowType] = useState("list");
   const DynamicMap = dynamic(() => import('@/components/Clubs/ClubsMap/ClubsMap'), {
     ssr: false,
@@ -47,7 +69,7 @@ export default function Clubs() {
           </div>
         </fieldset>
       </div>
-      {showType == "list" ? <ClubsList /> : <DynamicMap/>}
+      {showType == "list" ? <ClubsList clubs={clubs}/> : <DynamicMap/>}
     </>
   );
 }

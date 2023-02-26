@@ -19,6 +19,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "components/Clubs/ClubsMap/ClubsMap.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "components/Clubs/ClubsMap/ClubsMap.tsx", "context/context-provider.jsx", "context/context-provider.jsx"],
   "exclude": ["node_modules"]
 }

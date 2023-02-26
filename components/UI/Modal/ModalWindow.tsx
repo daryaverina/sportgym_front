@@ -18,7 +18,7 @@ const ModalWindow: React.FC<Props> = () => {
 
                 {/* Full-screen container to center the panel */}
                 <div className="fixed inset-0 flex items-center justify-center p-4">
-                    <Dialog.Panel className="w-full max-w-sm rounded bg-white">
+                    <Dialog.Panel className="w-full max-w-sm rounded bg-white z-50">
                         <div className="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
                             {modalContent}
                         </div>

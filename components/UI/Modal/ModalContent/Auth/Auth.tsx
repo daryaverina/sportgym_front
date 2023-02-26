@@ -1,4 +1,24 @@
+import { userStateContext } from "@/context/context-provider";
+import axiosClient from "@/public/axios";
+import { useState } from "react";
+import { useRouter } from 'next/router';
+
 export default function Auth() {
+  const [userData, setUserData] = useState({email: '', password: ''});
+  const router = useRouter();
+  const { currentUser, setCurrentUser, setUserToken } = userStateContext();
+  const onSubmit = (e:any) =>{
+    e.preventDefault();
+    axiosClient.post('/login', userData)
+      .then(({data}) => {
+        setCurrentUser(data.user);
+        setUserToken(data.token);
+        router.push('/account');
+      })
+      .catch((error) =>{
+        console.log(error);
+      })
+  }
     return (
       <>
         <div className="flex flex-col justify-center sm:px-6 lg:px-8">
@@ -10,15 +30,16 @@ export default function Auth() {
             <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
               <form className="space-y-6" action="#" method="POST">
                 <div>
-                  <label htmlFor="http://sportgym/auth/login" className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-gray-700">
                     Email address
                   </label>
                   <div className="mt-1">
                     <input
-                      id="name"
-                      name="name"
-                      type="name"
-                      autoComplete="name"
+                      onChange={(e)=> setUserData({...userData, email: e.target.value})}
+                      id="email"
+                      name="email"
+                      type="text"
+                      autoComplete="email"
                       required
                       className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                     />
@@ -31,9 +52,10 @@ export default function Auth() {
                   </label>
                   <div className="mt-1">
                     <input
+                      onChange={(e)=> setUserData({...userData, password: e.target.value})}
                       id="password"
                       name="password"
-                      type="password"
+                      type="text"
                       autoComplete="current-password"
                       required
                       className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
@@ -68,7 +90,7 @@ export default function Auth() {
                   >
                     Sign in
                   </button> */}
-                  <button type="submit" value="Submit">submit</button>
+                  <button value="Submit" onClick={onSubmit}>submit</button>
                 </div>
               </form>
             </div>

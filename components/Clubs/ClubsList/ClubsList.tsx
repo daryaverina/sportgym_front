@@ -1,24 +1,4 @@
-const products = [
-  {
-    id: 1,
-    name: "Earthen Bottle",
-    href: "#",
-    price: "$48",
-    imageSrc:
-      "https://img.freepik.com/free-photo/3d-rendering-modern-loft-gym-and-fitness_105762-2020.jpg",
-    imageAlt:
-      "Tall slender porcelain bottle with natural clay textured body and cork stopper.",
-  },
-  {
-    id: 2,
-    name: "Nomad Tumbler",
-    href: "#",
-    price: "$35",
-    imageSrc:
-      "https://img.freepik.com/premium-photo/modern-gym-interior-with-exercise-equipments_23-2147949737.jpg",
-    imageAlt:
-      "Olive drab green insulated bottle with flared screw lid and flat top.",
-  },
+
 //   {
 //     id: 3,
 //     name: "Focus Paper Refill",
@@ -50,17 +30,19 @@ const products = [
 //       "Hand holding black machined steel mechanical pencil with brass tip and top.",
 //   },
   // More products...
-];
+// ];
 
-export default function ClubsList() {
+import Link from "next/link";
+
+export default function ClubsList({clubs}) {
   return (
     <div className="bg-white">
       <div className="mx-auto max-w-2xl py-16 px-4 sm:py-10 sm:px-6 lg:max-w-7xl lg:px-8">
        
 
         <div className="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
-          {products.map((product) => (
-            <a key={product.id} href={product.href} className="group">
+          {clubs.map((product) => (
+            <Link key={product.id} href={product.href} className="group">
               <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-w-7 xl:aspect-h-8">
                 <img
                   src={product.imageSrc}
@@ -72,7 +54,7 @@ export default function ClubsList() {
               <p className="mt-1 text-lg font-medium text-gray-900">
                 {product.price}
               </p>
-            </a>
+            </Link>
           ))}
         </div>
       </div>
