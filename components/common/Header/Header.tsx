@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, useEffect } from "react";
 import { Popover, Transition } from "@headlessui/react";
 import {
   Bars3Icon,
@@ -31,79 +31,6 @@ import { useUI } from "@/context/use-ui";
 import Auth from "@/components/UI/Modal/ModalContent/Auth/Auth";
 import { userStateContext } from "@/context/context-provider";
 import axiosClient from "@/public/axios";
-const solutions = [
-  {
-    name: "Analytics",
-    description:
-      "Get a better understanding of where your traffic is coming from.",
-    href: "#",
-    icon: ChartBarIcon,
-  },
-  {
-    name: "Engagement",
-    description: "Speak directly to your customers in a more meaningful way.",
-    href: "#",
-    icon: CursorArrowRaysIcon,
-  },
-  {
-    name: "Security",
-    description: "Your customers' data will be safe and secure.",
-    href: "#",
-    icon: ShieldCheckIcon,
-  },
-  {
-    name: "Integrations",
-    description: "Connect with third-party tools that you're already using.",
-    href: "#",
-    icon: Squares2X2Icon,
-  },
-];
-const callsToAction = [
-  { name: "Watch Demo", href: "#", icon: PlayIcon },
-  { name: "View All Products", href: "#", icon: CheckCircleIcon },
-  { name: "Contact Sales", href: "#", icon: PhoneIcon },
-];
-const company = [
-  { name: "About", href: "#", icon: InformationCircleIcon },
-  { name: "Customers", href: "#", icon: BuildingOfficeIcon },
-  { name: "Press", href: "#", icon: NewspaperIcon },
-  { name: "Careers", href: "#", icon: BriefcaseIcon },
-  { name: "Privacy", href: "#", icon: ShieldCheckIcon },
-];
-const resources = [
-  { name: "Community", href: "#", icon: UserGroupIcon },
-  { name: "Partners", href: "#", icon: GlobeAltIcon },
-  { name: "Guides", href: "#", icon: BookmarkSquareIcon },
-  { name: "Webinars", href: "#", icon: ComputerDesktopIcon },
-];
-const blogPosts = [
-  {
-    id: 1,
-    name: "Boost your conversion rate",
-    href: "#",
-    preview:
-      "Eget ullamcorper ac ut vulputate fames nec mattis pellentesque elementum. Viverra tempor id mus.",
-    imageUrl:
-      "https://images.unsplash.com/photo-1558478551-1a378f63328e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2849&q=80",
-  },
-  {
-    id: 2,
-    name: "How to use search engine optimization to drive traffic to your site",
-    href: "#",
-    preview:
-      "Eget ullamcorper ac ut vulputate fames nec mattis pellentesque elementum. Viverra tempor id mus.",
-    imageUrl:
-      "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2300&q=80",
-  },
-];
-
-const products = [
-  { name: 'Analytics', description: 'Get a better understanding of your traffic', href: '#', icon: ChartPieIcon },
-  { name: 'Engagement', description: 'Speak directly to your customers', href: '#', icon: CursorArrowRaysIcon },
-  { name: 'Security', description: 'Your customers’ data will be safe and secure', href: '#', icon: FingerPrintIcon },
-  { name: 'Integrations', description: 'Connect with third-party tools', href: '#', icon: SquaresPlusIcon },
-  { name: 'Automations', description: 'Build strategic funnels that will convert', href: '#', icon: ArrowPathIcon },
-]
 
 export default function Header() {
   const { openModal, showLoader, hideLoader, setModalContent, displayModal } =
@@ -114,10 +41,18 @@ export default function Header() {
     e.preventDefault();
     axiosClient.post('/logout')
     .then(res =>{
-      setCurrentUser({});
+      setCurrentUser(undefined);
       setUserToken(null);
     })
   }
+  
+  useEffect(() => {
+    axiosClient.get('/user')
+      .then(({data}) => {
+        // console.log(data);
+        data != undefined && setCurrentUser(data)
+      })
+  }, [])
 
   return (
     <Popover className="relative bg-white">
@@ -145,7 +80,7 @@ export default function Header() {
           </div>
           <div className="hidden md:flex md:flex-1 md:items-center md:justify-between">
             <Popover.Group as="nav" className="flex space-x-10">
-              <Popover>
+              {/* <Popover>
                 {({ open }) => (
                   <>
                     <Popover.Button
@@ -230,7 +165,7 @@ export default function Header() {
                     </Transition>
                   </>
                 )}
-              </Popover>
+              </Popover> */}
               <Link
                 href="/clubs"
                 className="text-base font-medium text-gray-500 hover:text-gray-900"
@@ -242,7 +177,7 @@ export default function Header() {
                 </a> */}
               
             </Popover.Group>
-            {currentUser.name ? (
+            {currentUser && currentUser.name ? (
               
               <Popover className="relative">
                 {currentUser.name}
@@ -284,6 +219,14 @@ export default function Header() {
                       >
                         account
                       </Link>
+                      {  currentUser.account_type == 'm' && <Link
+                        key='dashboard'
+                        href='/dashboard'
+                        className="flex items-center justify-center gap-x-2.5 p-3 text-sm font-semibold leading-6 text-gray-900 hover:bg-gray-100"
+                      >
+                        dashboard
+                      </Link>
+                      }
                       <button
                         onClick={logout}
                         className="flex items-center justify-center gap-x-2.5 p-3 text-sm font-semibold leading-6 text-gray-900 hover:bg-gray-100"
@@ -344,7 +287,7 @@ export default function Header() {
         leaveFrom="opacity-100 scale-100"
         leaveTo="opacity-0 scale-95"
       >
-        <Popover.Panel
+        {/* <Popover.Panel
           focus
           className="absolute inset-x-0 top-0 z-30 origin-top-right transform p-2 transition md:hidden"
         >
@@ -450,7 +393,7 @@ export default function Header() {
               </div>
             </div>
           </div>
-        </Popover.Panel>
+        </Popover.Panel> */}
       </Transition>
     </Popover>
   );

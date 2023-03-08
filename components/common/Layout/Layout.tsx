@@ -6,6 +6,7 @@ import ModalWindow from './../../UI/Modal/ModalWindow';
 import { ContextProvider } from '../../../context/context-provider';
 
 export default function Layout({children}) {
+  
   return (
     <ContextProvider>
       <ManagedUIContext>
